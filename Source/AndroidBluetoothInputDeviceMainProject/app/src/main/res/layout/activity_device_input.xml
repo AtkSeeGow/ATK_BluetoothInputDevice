@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1f253d"
+    android:fitsSystemWindows="true"
+    tools:context=".DeviceInputActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:layout_weight="1">
+=
+                <EditText
+                    android:id="@+id/inputTextView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:textColor="#FFFFFF"
+                    android:singleLine="true"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/sendButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Send"
+                    android:background="@drawable/corners_button_background"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/backspaceButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Backspace"
+                    android:background="@drawable/corners_button_background"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/mouseLeftClickButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Left Click"
+                    android:background="@drawable/corners_button_background"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/mouseRightClickButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Right Click"
+                    android:background="@drawable/corners_button_background"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/arrowLeftKeyButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:text="◀"
+                        android:background="@drawable/corners_button_background"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/arrowUpKeyButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:text="▲"
+                        android:background="@drawable/corners_button_background"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/arrowDownKeyButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:text="▼"
+                        android:background="@drawable/corners_button_background"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/arrowRightKeyButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:text="▶"
+                        android:background="@drawable/corners_button_background"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -29,4 +29,5 @@ _ReSharper*/
 *.db
 
 Solution/.vs/
-Source/AndroidBluetoothInputDeviceMainProject/\.DS_Store
+
+*.DS_Store

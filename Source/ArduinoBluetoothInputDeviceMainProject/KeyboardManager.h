@@ -22,9 +22,7 @@ public:
 private:
 	int type;
 
-	KeyboardButton *getLeftMapping(int8_t rowPin, int8_t columnPin);
-	KeyboardButton *getRightMapping(int8_t rowPin, int8_t columnPin);
-	KeyboardButton *getNumberMapping(int8_t rowPin, int8_t columnPin);
+	KeyboardButton *getSuperAnimalRoyaleMapping(int8_t rowPin, int8_t columnPin);
 
 	KeyboardButton keyboardButtons[101];
 };

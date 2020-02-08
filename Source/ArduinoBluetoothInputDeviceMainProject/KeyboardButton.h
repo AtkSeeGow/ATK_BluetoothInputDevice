@@ -4,29 +4,28 @@
 #define _KEYBOARDBUTTON_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
+#include "arduino.h"
 #else
-	#include "WProgram.h"
+#include "WProgram.h"
 #endif
 
 class KeyboardButton {
-public:
-	KeyboardButton();
-	KeyboardButton(int bounceTime, uint8_t keyValue);
+  public:
+    KeyboardButton();
+    KeyboardButton(int bounceTime, uint8_t keyValue);
 
-	uint8_t KeyValue;
-  uint8_t BounceTime;
-  
-	void OperationPress();
-	void OperationRelease();
+    uint8_t KeyValue;
+    uint8_t BounceTime;
 
-	bool CurrentState;
-  bool IsMoreBounceTime();
+    void OperationPress();
+    void OperationRelease();
 
-  unsigned long LastChangeStateTime;
-private:
-	
+    bool CurrentState;
+    bool IsMoreBounceTime();
+
+    unsigned long LastChangeStateTime;
+  private:
+
 };
 
 #endif
-

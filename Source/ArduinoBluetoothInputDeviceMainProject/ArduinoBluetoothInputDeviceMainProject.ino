@@ -1,7 +1,12 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
 #include "KeyboardButton.h"
 #include "KeyboardManager.h"
 
-KeyboardManager keyboardManager = KeyboardManager();
+LiquidCrystal_I2C liquidCrystalI2C = LiquidCrystal_I2C(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+
+KeyboardManager keyboardManager = KeyboardManager(&liquidCrystalI2C);
 
 int8_t rowPins[] = { 8, 9, 10, 14, 16 };
 int8_t columnPins[] = { 5, 6, 7, 15, A0 };
@@ -18,6 +23,10 @@ void setup()
   for (int8_t pin : columnPins) {
     pinMode(pin, INPUT_PULLUP);
   }
+
+  liquidCrystalI2C.begin(16, 2);
+
+  keyboardManager.DisplayMappingModeName();
 }
 
 void loop()
@@ -34,6 +43,6 @@ void loop()
 
     digitalWrite(rowPin, HIGH);
   }
-  
+
   keyboardManager.Execution();
 }

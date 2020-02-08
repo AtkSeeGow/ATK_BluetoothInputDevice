@@ -6,9 +6,11 @@
 #include "KeyboardButton.h"
 #include "KeyboardManager.h"
 
-KeyboardManager::KeyboardManager()
+KeyboardManager::KeyboardManager(LiquidCrystal_I2C *liquidCrystalI2C)
 {
-  int8_t bounceTime = 100;
+  int8_t bounceTime = 5;
+
+  this->liquidCrystalI2C = liquidCrystalI2C;
 
   this->type = 0;
 
@@ -32,7 +34,7 @@ KeyboardManager::KeyboardManager()
   this->keyboardButtons[17] = KeyboardButton();
   this->keyboardButtons[18] = KeyboardButton(bounceTime * 10, KEY_RIGHT_CTRL);
   this->keyboardButtons[19] = KeyboardButton();
-  
+
   this->keyboardButtons[20] = KeyboardButton();
   this->keyboardButtons[21] = KeyboardButton();
   this->keyboardButtons[22] = KeyboardButton();
@@ -128,8 +130,10 @@ void KeyboardManager::OperationState(int8_t rowPin, int8_t columnPin, bool curre
     {
       this->type = this->type + 1;
 
-      if (this->type > 2)
+      if (this->type > 1)
         this->type = 0;
+
+      this->DisplayMappingModeName();
 
       keyboardButton->LastChangeStateTime = now;
     }
@@ -168,15 +172,33 @@ KeyboardButton *KeyboardManager::GetMapping(int8_t rowPin, int8_t columnPin)
 {
   if (this->type == 0)
     return this->getSuperAnimalRoyaleMapping(rowPin, columnPin);
+  else if (this->type == 1)
+    return this->getMonsterHunterWorldMapping(rowPin, columnPin);
 
-  return  &this->keyboardButtons[0];
+  return &this->keyboardButtons[0];
 }
 
-KeyboardButton * KeyboardManager::getSuperAnimalRoyaleMapping(int8_t rowPin, int8_t columnPin)
+void KeyboardManager::DisplayMappingModeName() {
+  this->liquidCrystalI2C->clear();
+  if (this->type == 0) {
+    this->liquidCrystalI2C->setCursor(0, 0);
+    this->liquidCrystalI2C->print("Super ");
+    this->liquidCrystalI2C->setCursor(0, 1);
+    this->liquidCrystalI2C->print("   Animal Royale");
+  }
+  else if (this->type == 1) {
+    this->liquidCrystalI2C->setCursor(0, 0);
+    this->liquidCrystalI2C->print("Monster");
+    this->liquidCrystalI2C->setCursor(0, 1);
+    this->liquidCrystalI2C->print("    Hunter World");
+  }
+}
+
+KeyboardButton *KeyboardManager::getSuperAnimalRoyaleMapping(int8_t rowPin, int8_t columnPin)
 {
   // 1
   if (rowPin == 16 && columnPin == 15)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[18];
   else if (rowPin == 9 && columnPin == 15)
     return &this->keyboardButtons[100];
   else if (rowPin == 10 && columnPin == 15)
@@ -235,4 +257,9 @@ KeyboardButton * KeyboardManager::getSuperAnimalRoyaleMapping(int8_t rowPin, int
     return &this->keyboardButtons[37]; // 空白(超級滾跳)
   else if (rowPin == 9 && columnPin == 5)
     return &this->keyboardButtons[86];  // M(地圖)
+}
+
+KeyboardButton *KeyboardManager::getMonsterHunterWorldMapping(int8_t rowPin, int8_t columnPin)
+{
+  return &this->keyboardButtons[18];
 }

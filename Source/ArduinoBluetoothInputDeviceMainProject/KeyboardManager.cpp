@@ -12,16 +12,14 @@ KeyboardManager::KeyboardManager(LiquidCrystal_I2C *liquidCrystalI2C)
 
   this->liquidCrystalI2C = liquidCrystalI2C;
 
-  this->type = 0;
-
   this->keyboardButtons[0] = KeyboardButton(bounceTime, KEY_ESC);
   this->keyboardButtons[1] = KeyboardButton(bounceTime, KEY_TAB);
   this->keyboardButtons[2] = KeyboardButton(bounceTime, KEY_CAPS_LOCK);
   this->keyboardButtons[3] = KeyboardButton(bounceTime, KEY_DELETE);
   this->keyboardButtons[4] = KeyboardButton(bounceTime, KEY_BACKSPACE);
   this->keyboardButtons[5] = KeyboardButton(bounceTime, KEY_RETURN);
-  this->keyboardButtons[6] = KeyboardButton();
-  this->keyboardButtons[7] = KeyboardButton();
+  this->keyboardButtons[6] = KeyboardButton(bounceTime, KEY_END);
+  this->keyboardButtons[7] = KeyboardButton(bounceTime, KEY_HOME);
   this->keyboardButtons[8] = KeyboardButton();
   this->keyboardButtons[9] = KeyboardButton(bounceTime, KEY_LEFT_SHIFT);
   this->keyboardButtons[10] = KeyboardButton(bounceTime, KEY_LEFT_CTRL);
@@ -29,12 +27,11 @@ KeyboardManager::KeyboardManager(LiquidCrystal_I2C *liquidCrystalI2C)
   this->keyboardButtons[12] = KeyboardButton(bounceTime, KEY_LEFT_ALT);
   this->keyboardButtons[13] = KeyboardButton();
   this->keyboardButtons[14] = KeyboardButton();
-  this->keyboardButtons[15] = KeyboardButton();
+  this->keyboardButtons[15] = KeyboardButton(bounceTime, 255);
   this->keyboardButtons[16] = KeyboardButton();
   this->keyboardButtons[17] = KeyboardButton();
-  this->keyboardButtons[18] = KeyboardButton(bounceTime * 10, KEY_RIGHT_CTRL);
+  this->keyboardButtons[18] = KeyboardButton(bounceTime, KEY_RIGHT_CTRL);
   this->keyboardButtons[19] = KeyboardButton();
-
   this->keyboardButtons[20] = KeyboardButton();
   this->keyboardButtons[21] = KeyboardButton();
   this->keyboardButtons[22] = KeyboardButton();
@@ -53,8 +50,8 @@ KeyboardManager::KeyboardManager(LiquidCrystal_I2C *liquidCrystalI2C)
   this->keyboardButtons[35] = KeyboardButton(bounceTime, ']');
   this->keyboardButtons[36] = KeyboardButton(bounceTime, '\'');
   this->keyboardButtons[37] = KeyboardButton(bounceTime, ' ');
-  this->keyboardButtons[38] = KeyboardButton();
-  this->keyboardButtons[39] = KeyboardButton();
+  this->keyboardButtons[38] = KeyboardButton(bounceTime, '`');
+  this->keyboardButtons[39] = KeyboardButton(bounceTime, '\'');
   this->keyboardButtons[40] = KeyboardButton();
   this->keyboardButtons[41] = KeyboardButton();
   this->keyboardButtons[42] = KeyboardButton();
@@ -124,30 +121,14 @@ void KeyboardManager::OperationState(int8_t rowPin, int8_t columnPin, bool curre
 
   KeyboardButton *keyboardButton = this->GetMapping(rowPin, columnPin);
 
-  if (keyboardButton->KeyValue == KEY_RIGHT_CTRL)
-  {
-    if (currentState == LOW && keyboardButton->IsMoreBounceTime())
-    {
-      this->type = this->type + 1;
-
-      if (this->type > 1)
-        this->type = 0;
-
-      this->DisplayMappingModeName();
-
-      keyboardButton->LastChangeStateTime = now;
-    }
-
+  if (!keyboardButton->IsMoreBounceTime())
     return;
-  }
 
-  if (currentState != keyboardButton->CurrentState)
+  if (keyboardButton->CurrentState != currentState)
   {
-    if (keyboardButton->IsMoreBounceTime())
-    {
-      keyboardButton->LastChangeStateTime = now;
-      keyboardButton->CurrentState = currentState;
-    }
+    keyboardButton->LastChangeStateTime = now;
+    keyboardButton->CurrentState = currentState;
+    this->DisplayMappingModeName();
   }
 }
 
@@ -157,109 +138,237 @@ void KeyboardManager::Execution()
   {
     KeyboardButton keyboardButton = this->keyboardButtons[i];
 
-    if (keyboardButton.KeyValue == 0)
+    if (keyboardButton.KeyValue == 0) {
       continue;
-
-    if (keyboardButton.KeyValue == KEY_RIGHT_CTRL)
+    }
+    else if (keyboardButton.KeyValue == 255) {
       continue;
-
-    keyboardButton.OperationPress();
-    keyboardButton.OperationRelease();
+    }
+    else {
+      keyboardButton.OperationPress();
+      keyboardButton.OperationRelease();
+    }
   }
 }
 
 KeyboardButton *KeyboardManager::GetMapping(int8_t rowPin, int8_t columnPin)
 {
-  if (this->type == 0)
-    return this->getSuperAnimalRoyaleMapping(rowPin, columnPin);
-  else if (this->type == 1)
-    return this->getMonsterHunterWorldMapping(rowPin, columnPin);
-
-  return &this->keyboardButtons[0];
+  if (this->keyboardButtons[15].CurrentState == LOW) {
+    KeyboardButton *keyboardButton = this->getExtendMapping(rowPin, columnPin);
+    return keyboardButton;
+  }
+  else {
+    KeyboardButton *keyboardButton = this->getBasicMapping(rowPin, columnPin);
+    return keyboardButton;
+  }
 }
 
 void KeyboardManager::DisplayMappingModeName() {
   this->liquidCrystalI2C->clear();
-  if (this->type == 0) {
+  if (this->keyboardButtons[15].CurrentState == LOW) {
     this->liquidCrystalI2C->setCursor(0, 0);
-    this->liquidCrystalI2C->print("Super ");
+    this->liquidCrystalI2C->print("Mapping Mode :");
     this->liquidCrystalI2C->setCursor(0, 1);
-    this->liquidCrystalI2C->print("   Animal Royale");
+    this->liquidCrystalI2C->print(" Extend Keyboard");
   }
-  else if (this->type == 1) {
+  else {
     this->liquidCrystalI2C->setCursor(0, 0);
-    this->liquidCrystalI2C->print("Monster");
+    this->liquidCrystalI2C->print("Mapping Mode :");
     this->liquidCrystalI2C->setCursor(0, 1);
-    this->liquidCrystalI2C->print("    Hunter World");
+    this->liquidCrystalI2C->print(" Basic Keyboard");
   }
 }
 
-KeyboardButton *KeyboardManager::getSuperAnimalRoyaleMapping(int8_t rowPin, int8_t columnPin)
+KeyboardButton *KeyboardManager::getBasicMapping(int8_t rowPin, int8_t columnPin)
 {
   // 1
-  if (rowPin == 16 && columnPin == 15)
-    return &this->keyboardButtons[18];
-  else if (rowPin == 9 && columnPin == 15)
-    return &this->keyboardButtons[100];
-  else if (rowPin == 10 && columnPin == 15)
-    return &this->keyboardButtons[10]; // CTRL(躡手躡腳)
+  if (rowPin == 21 && columnPin == 4)
+    return &this->keyboardButtons[31]; //
+  else if (rowPin == 21 && columnPin == 5)
+    return &this->keyboardButtons[1]; // TAB
+  else if (rowPin == 21 && columnPin == 6)
+    return &this->keyboardButtons[2]; // CAPS_LOCK
+  else if (rowPin == 21 && columnPin == 7)
+    return &this->keyboardButtons[9]; // SHIFT
+  else if (rowPin == 21 && columnPin == 8)
+    return &this->keyboardButtons[11]; // GUI
 
   // 2
-  else if (rowPin == 10 && columnPin == 18)
-    return &this->keyboardButtons[90]; // Q(治療)
-  else if (rowPin == 9 && columnPin == 18)
-    return &this->keyboardButtons[76]; // C(修理裝甲)
-  else if (rowPin == 14 && columnPin == 15)
+  if (rowPin == 20 && columnPin == 4)
+    return &this->keyboardButtons[52]; // 1
+  else if (rowPin == 20 && columnPin == 5)
+    return &this->keyboardButtons[90]; // Q
+  else if (rowPin == 20 && columnPin == 6)
+    return &this->keyboardButtons[74]; // A
+  else if (rowPin == 20 && columnPin == 7)
+    return &this->keyboardButtons[99]; // Z
+  else if (rowPin == 20 && columnPin == 8)
+    return &this->keyboardButtons[62]; // F1
+
+  // 3
+  if (rowPin == 19 && columnPin == 4)
+    return &this->keyboardButtons[53]; // 2
+  else if (rowPin == 19 && columnPin == 5)
+    return &this->keyboardButtons[96]; // W
+  else if (rowPin == 19 && columnPin == 6)
+    return &this->keyboardButtons[92]; // S
+  else if (rowPin == 19 && columnPin == 7)
+    return &this->keyboardButtons[97]; // X
+  else if (rowPin == 19 && columnPin == 8)
+    return &this->keyboardButtons[63]; // F2
+
+  // 4
+  if (rowPin == 18 && columnPin == 4)
+    return &this->keyboardButtons[54]; // 3
+  else if (rowPin == 18 && columnPin == 5)
+    return &this->keyboardButtons[78]; // E
+  else if (rowPin == 18 && columnPin == 6)
+    return &this->keyboardButtons[77]; // D
+  else if (rowPin == 18 && columnPin == 7)
+    return &this->keyboardButtons[76]; // C
+  else if (rowPin == 18 && columnPin == 8)
+    return &this->keyboardButtons[64]; // F3
+
+  // 5
+  if (rowPin == 15 && columnPin == 4)
+    return &this->keyboardButtons[55]; // 4
+  else if (rowPin == 15 && columnPin == 5)
+    return &this->keyboardButtons[91]; // R
+  else if (rowPin == 15 && columnPin == 6)
+    return &this->keyboardButtons[79]; // F
+  else if (rowPin == 15 && columnPin == 7)
+    return &this->keyboardButtons[95]; // V
+  else if (rowPin == 15 && columnPin == 8)
+    return &this->keyboardButtons[65]; // F4
+
+  // 6
+  if (rowPin == 14 && columnPin == 4)
+    return &this->keyboardButtons[56]; // 5
+  else if (rowPin == 14 && columnPin == 5)
+    return &this->keyboardButtons[93]; // T
+  else if (rowPin == 14 && columnPin == 6)
+    return &this->keyboardButtons[80]; // G
+  else if (rowPin == 14 && columnPin == 7)
+    return &this->keyboardButtons[75]; // B
+
+  // 7
+  if (rowPin == 16 && columnPin == 4)
+    return &this->keyboardButtons[0]; // ESC
+  else if (rowPin == 16 && columnPin == 5)
+    return &this->keyboardButtons[67]; // F6
+  else if (rowPin == 16 && columnPin == 6)
+    return &this->keyboardButtons[66]; // F5
+
+  // 8
+  if (rowPin == 14 && columnPin == 8)
+    return &this->keyboardButtons[37]; // ' '
+  else if (rowPin == 16 && columnPin == 8)
+    return &this->keyboardButtons[10]; // CTRL
+  else if (rowPin == 10 && columnPin == 6)
+    return &this->keyboardButtons[15]; // FN1
+  else if (rowPin == 10 && columnPin == 8)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 10 && columnPin == 7)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 16 && columnPin == 7)
+    return &this->keyboardButtons[12]; // ALT
+
+  return &this->keyboardButtons[100];
+}
+
+KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPin)
+{
+  // 1
+  if (rowPin == 21 && columnPin == 4)
+    return &this->keyboardButtons[31]; //
+  else if (rowPin == 21 && columnPin == 5)
+    return &this->keyboardButtons[1]; // TAB
+  else if (rowPin == 21 && columnPin == 6)
+    return &this->keyboardButtons[2]; // CAPS_LOCK
+  else if (rowPin == 21 && columnPin == 7)
+    return &this->keyboardButtons[9]; // SHIFT
+  else if (rowPin == 21 && columnPin == 8)
+    return &this->keyboardButtons[11]; // GUI
+
+  // 2
+  if (rowPin == 20 && columnPin == 4)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 20 && columnPin == 5)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 20 && columnPin == 6)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 20 && columnPin == 7)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 20 && columnPin == 8)
     return &this->keyboardButtons[100];
 
   // 3
-  else if (rowPin == 14 && columnPin == 7)
-    return &this->keyboardButtons[54]; // 3(近戰)
-  else if (rowPin == 16 && columnPin == 7)
-    return &this->keyboardButtons[74]; // A(左移動)
-  else if (rowPin == 16 && columnPin == 18)
+  if (rowPin == 19 && columnPin == 4)
     return &this->keyboardButtons[100];
-  else if (rowPin == 8 && columnPin == 15)
+  else if (rowPin == 19 && columnPin == 5)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 19 && columnPin == 6)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 19 && columnPin == 7)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 19 && columnPin == 8)
     return &this->keyboardButtons[100];
 
   // 4
-  else if (rowPin == 10 && columnPin == 6)
-    return &this->keyboardButtons[55]; // 4(手榴彈)
-  else if (rowPin == 8 && columnPin == 7)
-    return &this->keyboardButtons[96]; // W(上移動)
-  else if (rowPin == 8 && columnPin == 18)
-    return &this->keyboardButtons[92]; // S(下移動)
-  else if (rowPin == 14 && columnPin == 18)
+  if (rowPin == 18 && columnPin == 4)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 18 && columnPin == 5)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 18 && columnPin == 6)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 18 && columnPin == 7)
+    return &this->keyboardButtons[50];
+  else if (rowPin == 18 && columnPin == 8)
     return &this->keyboardButtons[100];
 
   // 5
-  else if (rowPin == 14 && columnPin == 6)
-    return &this->keyboardButtons[78]; // E(拾取物品)
-  else if (rowPin == 10 && columnPin == 7)
-    return &this->keyboardButtons[77]; // D(下移動)
-  else if (rowPin == 9 && columnPin == 7)
+  if (rowPin == 15 && columnPin == 4)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 15 && columnPin == 5)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 15 && columnPin == 6)
+    return &this->keyboardButtons[48];
+  else if (rowPin == 15 && columnPin == 7)
+    return &this->keyboardButtons[49];
+  else if (rowPin == 15 && columnPin == 8)
     return &this->keyboardButtons[100];
 
   // 6
-  else if (rowPin == 8 && columnPin == 6)
+  if (rowPin == 14 && columnPin == 4)
     return &this->keyboardButtons[100];
-  else if (rowPin == 16 && columnPin == 6)
-    return &this->keyboardButtons[91]; // R(重新裝填)
-  else if (rowPin == 9 && columnPin == 6)
-    return &this->keyboardButtons[100];
+  else if (rowPin == 14 && columnPin == 5)
+    return &this->keyboardButtons[4]; // BACK
+  else if (rowPin == 14 && columnPin == 6)
+    return &this->keyboardButtons[5]; // RETURN
+  else if (rowPin == 14 && columnPin == 7)
+    return &this->keyboardButtons[51];
 
   // 7
-  else if (rowPin == 10 && columnPin == 5)
-    return &this->keyboardButtons[52]; // 1(武器1)
+  if (rowPin == 16 && columnPin == 4)
+    return &this->keyboardButtons[100];
   else if (rowPin == 16 && columnPin == 5)
-    return &this->keyboardButtons[53]; // 2(武器2)
-  else if (rowPin == 8 && columnPin == 5)
-    return &this->keyboardButtons[37]; // 空白(超級滾跳)
-  else if (rowPin == 9 && columnPin == 5)
-    return &this->keyboardButtons[86];  // M(地圖)
-}
+    return &this->keyboardButtons[100];
+  else if (rowPin == 16 && columnPin == 6)
+    return &this->keyboardButtons[100];
 
-KeyboardButton *KeyboardManager::getMonsterHunterWorldMapping(int8_t rowPin, int8_t columnPin)
-{
-  return &this->keyboardButtons[18];
+  // 8
+  if (rowPin == 14 && columnPin == 8)
+    return &this->keyboardButtons[37]; // ' '
+  else if (rowPin == 16 && columnPin == 8)
+    return &this->keyboardButtons[10]; // CTRL
+  else if (rowPin == 10 && columnPin == 6)
+    return &this->keyboardButtons[15]; // FN1
+  else if (rowPin == 10 && columnPin == 8)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 10 && columnPin == 7)
+    return &this->keyboardButtons[100];
+  else if (rowPin == 16 && columnPin == 7)
+    return &this->keyboardButtons[12]; // ALT
+
+  return &this->keyboardButtons[100];
 }

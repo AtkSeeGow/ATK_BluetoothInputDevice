@@ -37,4 +37,3 @@ bool KeyboardButton::IsMoreBounceTime()
   unsigned long now = millis();
   return now - this->LastChangeStateTime > this->BounceTime;
 }
-

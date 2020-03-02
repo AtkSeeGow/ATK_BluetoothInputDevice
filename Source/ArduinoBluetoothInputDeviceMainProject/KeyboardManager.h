@@ -23,12 +23,11 @@ class KeyboardManager {
 
     KeyboardButton *GetMapping(int8_t rowPin, int8_t columnPin);
   private:
-    int type;
     LiquidCrystal_I2C *liquidCrystalI2C;
 
-    KeyboardButton *getSuperAnimalRoyaleMapping(int8_t rowPin, int8_t columnPin);
-    KeyboardButton *KeyboardManager::getMonsterHunterWorldMapping(int8_t rowPin, int8_t columnPin);
-
+    KeyboardButton *getBasicMapping(int8_t rowPin, int8_t columnPin);
+    KeyboardButton *getExtendMapping(int8_t rowPin, int8_t columnPin);
+    
     KeyboardButton keyboardButtons[101];
 };
 

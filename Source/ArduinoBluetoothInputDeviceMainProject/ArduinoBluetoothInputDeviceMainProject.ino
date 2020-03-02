@@ -8,8 +8,8 @@ LiquidCrystal_I2C liquidCrystalI2C = LiquidCrystal_I2C(0x3F, 2, 1, 0, 4, 5, 6, 7
 
 KeyboardManager keyboardManager = KeyboardManager(&liquidCrystalI2C);
 
-int8_t rowPins[] = { 8, 9, 10, 14, 16 };
-int8_t columnPins[] = { 5, 6, 7, 15, A0 };
+int8_t rowPins[] = { A3, A2, A1, A0, 15, 14, 16, 10 };
+int8_t columnPins[] = { 4, 5, 6, 7, 8, 9 };
 
 void setup()
 {
@@ -25,8 +25,6 @@ void setup()
   }
 
   liquidCrystalI2C.begin(16, 2);
-
-  keyboardManager.DisplayMappingModeName();
 }
 
 void loop()

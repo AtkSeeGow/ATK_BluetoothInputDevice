@@ -9,11 +9,19 @@
 #include "WProgram.h"
 #endif
 
+enum KeyType {
+  None = 1,
+  KeyboardType,
+  MouseType,
+  FunctionType
+};
+
 class KeyboardButton {
   public:
     KeyboardButton();
-    KeyboardButton(int bounceTime, uint8_t keyValue);
+    KeyboardButton(int bounceTime, uint8_t keyValue, uint8_t keyType);
 
+    KeyType KeyType;
     uint8_t KeyValue;
     uint8_t BounceTime;
 

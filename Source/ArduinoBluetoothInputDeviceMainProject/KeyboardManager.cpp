@@ -3,6 +3,7 @@
 //
 
 #include <Keyboard.h>
+#include <Mouse.h>
 #include "KeyboardButton.h"
 #include "KeyboardManager.h"
 
@@ -12,46 +13,46 @@ KeyboardManager::KeyboardManager(LiquidCrystal_I2C *liquidCrystalI2C)
 
   this->liquidCrystalI2C = liquidCrystalI2C;
 
-  this->keyboardButtons[0] = KeyboardButton(bounceTime, KEY_ESC);
-  this->keyboardButtons[1] = KeyboardButton(bounceTime, KEY_TAB);
-  this->keyboardButtons[2] = KeyboardButton(bounceTime, KEY_CAPS_LOCK);
-  this->keyboardButtons[3] = KeyboardButton(bounceTime, KEY_DELETE);
-  this->keyboardButtons[4] = KeyboardButton(bounceTime, KEY_BACKSPACE);
-  this->keyboardButtons[5] = KeyboardButton(bounceTime, KEY_RETURN);
-  this->keyboardButtons[6] = KeyboardButton(bounceTime, KEY_END);
-  this->keyboardButtons[7] = KeyboardButton(bounceTime, KEY_HOME);
+  this->keyboardButtons[0] = KeyboardButton(bounceTime, KEY_ESC, KeyboardType);
+  this->keyboardButtons[1] = KeyboardButton(bounceTime, KEY_TAB, KeyboardType);
+  this->keyboardButtons[2] = KeyboardButton(bounceTime, KEY_CAPS_LOCK, KeyboardType);
+  this->keyboardButtons[3] = KeyboardButton(bounceTime, KEY_DELETE, KeyboardType);
+  this->keyboardButtons[4] = KeyboardButton(bounceTime, KEY_BACKSPACE, KeyboardType);
+  this->keyboardButtons[5] = KeyboardButton(bounceTime, KEY_RETURN, KeyboardType);
+  this->keyboardButtons[6] = KeyboardButton(bounceTime, KEY_END, KeyboardType);
+  this->keyboardButtons[7] = KeyboardButton(bounceTime, KEY_HOME, KeyboardType);
   this->keyboardButtons[8] = KeyboardButton();
-  this->keyboardButtons[9] = KeyboardButton(bounceTime, KEY_LEFT_SHIFT);
-  this->keyboardButtons[10] = KeyboardButton(bounceTime, KEY_LEFT_CTRL);
-  this->keyboardButtons[11] = KeyboardButton(bounceTime, KEY_LEFT_GUI);
-  this->keyboardButtons[12] = KeyboardButton(bounceTime, KEY_LEFT_ALT);
+  this->keyboardButtons[9] = KeyboardButton(bounceTime, KEY_LEFT_SHIFT, KeyboardType);
+  this->keyboardButtons[10] = KeyboardButton(bounceTime, KEY_LEFT_CTRL, KeyboardType);
+  this->keyboardButtons[11] = KeyboardButton(bounceTime, KEY_LEFT_GUI, KeyboardType);
+  this->keyboardButtons[12] = KeyboardButton(bounceTime, KEY_LEFT_ALT, KeyboardType);
   this->keyboardButtons[13] = KeyboardButton();
   this->keyboardButtons[14] = KeyboardButton();
-  this->keyboardButtons[15] = KeyboardButton(bounceTime, 255);
+  this->keyboardButtons[15] = KeyboardButton(bounceTime, 1, FunctionType);
   this->keyboardButtons[16] = KeyboardButton();
   this->keyboardButtons[17] = KeyboardButton();
-  this->keyboardButtons[18] = KeyboardButton(bounceTime, KEY_RIGHT_CTRL);
+  this->keyboardButtons[18] = KeyboardButton(bounceTime, KEY_RIGHT_CTRL, KeyboardType);
   this->keyboardButtons[19] = KeyboardButton();
-  this->keyboardButtons[20] = KeyboardButton();
-  this->keyboardButtons[21] = KeyboardButton();
-  this->keyboardButtons[22] = KeyboardButton();
+  this->keyboardButtons[20] = KeyboardButton(bounceTime, MOUSE_LEFT, MouseType);
+  this->keyboardButtons[21] = KeyboardButton(bounceTime, MOUSE_RIGHT, MouseType);
+  this->keyboardButtons[22] = KeyboardButton(bounceTime, MOUSE_MIDDLE, MouseType);
   this->keyboardButtons[23] = KeyboardButton();
   this->keyboardButtons[24] = KeyboardButton();
   this->keyboardButtons[25] = KeyboardButton();
-  this->keyboardButtons[26] = KeyboardButton(bounceTime, '/');
-  this->keyboardButtons[27] = KeyboardButton(bounceTime, '\\');
-  this->keyboardButtons[28] = KeyboardButton(bounceTime, '.');
-  this->keyboardButtons[29] = KeyboardButton(bounceTime, ',');
-  this->keyboardButtons[30] = KeyboardButton(bounceTime, ';');
-  this->keyboardButtons[31] = KeyboardButton(bounceTime, '`');
-  this->keyboardButtons[32] = KeyboardButton(bounceTime, '-');
-  this->keyboardButtons[33] = KeyboardButton(bounceTime, '=');
-  this->keyboardButtons[34] = KeyboardButton(bounceTime, '[');
-  this->keyboardButtons[35] = KeyboardButton(bounceTime, ']');
-  this->keyboardButtons[36] = KeyboardButton(bounceTime, '\'');
-  this->keyboardButtons[37] = KeyboardButton(bounceTime, ' ');
-  this->keyboardButtons[38] = KeyboardButton(bounceTime, '`');
-  this->keyboardButtons[39] = KeyboardButton(bounceTime, '\'');
+  this->keyboardButtons[26] = KeyboardButton(bounceTime, '/', KeyboardType);
+  this->keyboardButtons[27] = KeyboardButton(bounceTime, '\\', KeyboardType);
+  this->keyboardButtons[28] = KeyboardButton(bounceTime, '.', KeyboardType);
+  this->keyboardButtons[29] = KeyboardButton(bounceTime, ',', KeyboardType);
+  this->keyboardButtons[30] = KeyboardButton(bounceTime, ';', KeyboardType);
+  this->keyboardButtons[31] = KeyboardButton(bounceTime, '`', KeyboardType);
+  this->keyboardButtons[32] = KeyboardButton(bounceTime, '-', KeyboardType);
+  this->keyboardButtons[33] = KeyboardButton(bounceTime, '=', KeyboardType);
+  this->keyboardButtons[34] = KeyboardButton(bounceTime, '[', KeyboardType);
+  this->keyboardButtons[35] = KeyboardButton(bounceTime, ']', KeyboardType);
+  this->keyboardButtons[36] = KeyboardButton(bounceTime, '\'', KeyboardType);
+  this->keyboardButtons[37] = KeyboardButton(bounceTime, ' ', KeyboardType);
+  this->keyboardButtons[38] = KeyboardButton(bounceTime, '`', KeyboardType);
+  this->keyboardButtons[39] = KeyboardButton(bounceTime, '\'', KeyboardType);
   this->keyboardButtons[40] = KeyboardButton();
   this->keyboardButtons[41] = KeyboardButton();
   this->keyboardButtons[42] = KeyboardButton();
@@ -60,58 +61,58 @@ KeyboardManager::KeyboardManager(LiquidCrystal_I2C *liquidCrystalI2C)
   this->keyboardButtons[45] = KeyboardButton();
   this->keyboardButtons[46] = KeyboardButton();
   this->keyboardButtons[47] = KeyboardButton();
-  this->keyboardButtons[48] = KeyboardButton(bounceTime, KEY_UP_ARROW);
-  this->keyboardButtons[49] = KeyboardButton(bounceTime, KEY_DOWN_ARROW);
-  this->keyboardButtons[50] = KeyboardButton(bounceTime, KEY_LEFT_ARROW);
-  this->keyboardButtons[51] = KeyboardButton(bounceTime, KEY_RIGHT_ARROW);
-  this->keyboardButtons[52] = KeyboardButton(bounceTime, '1');
-  this->keyboardButtons[53] = KeyboardButton(bounceTime, '2');
-  this->keyboardButtons[54] = KeyboardButton(bounceTime, '3');
-  this->keyboardButtons[55] = KeyboardButton(bounceTime, '4');
-  this->keyboardButtons[56] = KeyboardButton(bounceTime, '5');
-  this->keyboardButtons[57] = KeyboardButton(bounceTime, '6');
-  this->keyboardButtons[58] = KeyboardButton(bounceTime, '7');
-  this->keyboardButtons[59] = KeyboardButton(bounceTime, '8');
-  this->keyboardButtons[60] = KeyboardButton(bounceTime, '9');
-  this->keyboardButtons[61] = KeyboardButton(bounceTime, '0');
-  this->keyboardButtons[62] = KeyboardButton(bounceTime, KEY_F1);
-  this->keyboardButtons[63] = KeyboardButton(bounceTime, KEY_F2);
-  this->keyboardButtons[64] = KeyboardButton(bounceTime, KEY_F3);
-  this->keyboardButtons[65] = KeyboardButton(bounceTime, KEY_F4);
-  this->keyboardButtons[66] = KeyboardButton(bounceTime, KEY_F5);
-  this->keyboardButtons[67] = KeyboardButton(bounceTime, KEY_F6);
-  this->keyboardButtons[68] = KeyboardButton(bounceTime, KEY_F7);
-  this->keyboardButtons[69] = KeyboardButton(bounceTime, KEY_F8);
-  this->keyboardButtons[70] = KeyboardButton(bounceTime, KEY_F9);
-  this->keyboardButtons[71] = KeyboardButton(bounceTime, KEY_F10);
-  this->keyboardButtons[72] = KeyboardButton(bounceTime, KEY_F11);
-  this->keyboardButtons[73] = KeyboardButton(bounceTime, KEY_F12);
-  this->keyboardButtons[74] = KeyboardButton(bounceTime, 'a');
-  this->keyboardButtons[75] = KeyboardButton(bounceTime, 'b');
-  this->keyboardButtons[76] = KeyboardButton(bounceTime, 'c');
-  this->keyboardButtons[77] = KeyboardButton(bounceTime, 'd');
-  this->keyboardButtons[78] = KeyboardButton(bounceTime, 'e');
-  this->keyboardButtons[79] = KeyboardButton(bounceTime, 'f');
-  this->keyboardButtons[80] = KeyboardButton(bounceTime, 'g');
-  this->keyboardButtons[81] = KeyboardButton(bounceTime, 'h');
-  this->keyboardButtons[82] = KeyboardButton(bounceTime, 'i');
-  this->keyboardButtons[83] = KeyboardButton(bounceTime, 'j');
-  this->keyboardButtons[84] = KeyboardButton(bounceTime, 'k');
-  this->keyboardButtons[85] = KeyboardButton(bounceTime, 'l');
-  this->keyboardButtons[86] = KeyboardButton(bounceTime, 'm');
-  this->keyboardButtons[87] = KeyboardButton(bounceTime, 'n');
-  this->keyboardButtons[88] = KeyboardButton(bounceTime, 'o');
-  this->keyboardButtons[89] = KeyboardButton(bounceTime, 'p');
-  this->keyboardButtons[90] = KeyboardButton(bounceTime, 'q');
-  this->keyboardButtons[91] = KeyboardButton(bounceTime, 'r');
-  this->keyboardButtons[92] = KeyboardButton(bounceTime, 's');
-  this->keyboardButtons[93] = KeyboardButton(bounceTime, 't');
-  this->keyboardButtons[94] = KeyboardButton(bounceTime, 'u');
-  this->keyboardButtons[95] = KeyboardButton(bounceTime, 'v');
-  this->keyboardButtons[96] = KeyboardButton(bounceTime, 'w');
-  this->keyboardButtons[97] = KeyboardButton(bounceTime, 'x');
-  this->keyboardButtons[98] = KeyboardButton(bounceTime, 'y');
-  this->keyboardButtons[99] = KeyboardButton(bounceTime, 'z');
+  this->keyboardButtons[48] = KeyboardButton(bounceTime, KEY_UP_ARROW, KeyboardType);
+  this->keyboardButtons[49] = KeyboardButton(bounceTime, KEY_DOWN_ARROW, KeyboardType);
+  this->keyboardButtons[50] = KeyboardButton(bounceTime, KEY_LEFT_ARROW, KeyboardType);
+  this->keyboardButtons[51] = KeyboardButton(bounceTime, KEY_RIGHT_ARROW, KeyboardType);
+  this->keyboardButtons[52] = KeyboardButton(bounceTime, '1', KeyboardType);
+  this->keyboardButtons[53] = KeyboardButton(bounceTime, '2', KeyboardType);
+  this->keyboardButtons[54] = KeyboardButton(bounceTime, '3', KeyboardType);
+  this->keyboardButtons[55] = KeyboardButton(bounceTime, '4', KeyboardType);
+  this->keyboardButtons[56] = KeyboardButton(bounceTime, '5', KeyboardType);
+  this->keyboardButtons[57] = KeyboardButton(bounceTime, '6', KeyboardType);
+  this->keyboardButtons[58] = KeyboardButton(bounceTime, '7', KeyboardType);
+  this->keyboardButtons[59] = KeyboardButton(bounceTime, '8', KeyboardType);
+  this->keyboardButtons[60] = KeyboardButton(bounceTime, '9', KeyboardType);
+  this->keyboardButtons[61] = KeyboardButton(bounceTime, '0', KeyboardType);
+  this->keyboardButtons[62] = KeyboardButton(bounceTime, KEY_F1, KeyboardType);
+  this->keyboardButtons[63] = KeyboardButton(bounceTime, KEY_F2, KeyboardType);
+  this->keyboardButtons[64] = KeyboardButton(bounceTime, KEY_F3, KeyboardType);
+  this->keyboardButtons[65] = KeyboardButton(bounceTime, KEY_F4, KeyboardType);
+  this->keyboardButtons[66] = KeyboardButton(bounceTime, KEY_F5, KeyboardType);
+  this->keyboardButtons[67] = KeyboardButton(bounceTime, KEY_F6, KeyboardType);
+  this->keyboardButtons[68] = KeyboardButton(bounceTime, KEY_F7, KeyboardType);
+  this->keyboardButtons[69] = KeyboardButton(bounceTime, KEY_F8, KeyboardType);
+  this->keyboardButtons[70] = KeyboardButton(bounceTime, KEY_F9, KeyboardType);
+  this->keyboardButtons[71] = KeyboardButton(bounceTime, KEY_F10, KeyboardType);
+  this->keyboardButtons[72] = KeyboardButton(bounceTime, KEY_F11, KeyboardType);
+  this->keyboardButtons[73] = KeyboardButton(bounceTime, KEY_F12, KeyboardType);
+  this->keyboardButtons[74] = KeyboardButton(bounceTime, 'a', KeyboardType);
+  this->keyboardButtons[75] = KeyboardButton(bounceTime, 'b', KeyboardType);
+  this->keyboardButtons[76] = KeyboardButton(bounceTime, 'c', KeyboardType);
+  this->keyboardButtons[77] = KeyboardButton(bounceTime, 'd', KeyboardType);
+  this->keyboardButtons[78] = KeyboardButton(bounceTime, 'e', KeyboardType);
+  this->keyboardButtons[79] = KeyboardButton(bounceTime, 'f', KeyboardType);
+  this->keyboardButtons[80] = KeyboardButton(bounceTime, 'g', KeyboardType);
+  this->keyboardButtons[81] = KeyboardButton(bounceTime, 'h', KeyboardType);
+  this->keyboardButtons[82] = KeyboardButton(bounceTime, 'i', KeyboardType);
+  this->keyboardButtons[83] = KeyboardButton(bounceTime, 'j', KeyboardType);
+  this->keyboardButtons[84] = KeyboardButton(bounceTime, 'k', KeyboardType);
+  this->keyboardButtons[85] = KeyboardButton(bounceTime, 'l', KeyboardType);
+  this->keyboardButtons[86] = KeyboardButton(bounceTime, 'm', KeyboardType);
+  this->keyboardButtons[87] = KeyboardButton(bounceTime, 'n', KeyboardType);
+  this->keyboardButtons[88] = KeyboardButton(bounceTime, 'o', KeyboardType);
+  this->keyboardButtons[89] = KeyboardButton(bounceTime, 'p', KeyboardType);
+  this->keyboardButtons[90] = KeyboardButton(bounceTime, 'q', KeyboardType);
+  this->keyboardButtons[91] = KeyboardButton(bounceTime, 'r', KeyboardType);
+  this->keyboardButtons[92] = KeyboardButton(bounceTime, 's', KeyboardType);
+  this->keyboardButtons[93] = KeyboardButton(bounceTime, 't', KeyboardType);
+  this->keyboardButtons[94] = KeyboardButton(bounceTime, 'u', KeyboardType);
+  this->keyboardButtons[95] = KeyboardButton(bounceTime, 'v', KeyboardType);
+  this->keyboardButtons[96] = KeyboardButton(bounceTime, 'w', KeyboardType);
+  this->keyboardButtons[97] = KeyboardButton(bounceTime, 'x', KeyboardType);
+  this->keyboardButtons[98] = KeyboardButton(bounceTime, 'y', KeyboardType);
+  this->keyboardButtons[99] = KeyboardButton(bounceTime, 'z', KeyboardType);
   this->keyboardButtons[100] = KeyboardButton();
 }
 
@@ -137,17 +138,8 @@ void KeyboardManager::Execution()
   for (int8_t i = 0; i < 101; i++)
   {
     KeyboardButton keyboardButton = this->keyboardButtons[i];
-
-    if (keyboardButton.KeyValue == 0) {
-      continue;
-    }
-    else if (keyboardButton.KeyValue == 255) {
-      continue;
-    }
-    else {
-      keyboardButton.OperationPress();
-      keyboardButton.OperationRelease();
-    }
+    keyboardButton.OperationPress();
+    keyboardButton.OperationRelease();
   }
 }
 
@@ -306,7 +298,7 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   if (rowPin == 19 && columnPin == 4)
     return &this->keyboardButtons[100];
   else if (rowPin == 19 && columnPin == 5)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[20];
   else if (rowPin == 19 && columnPin == 6)
     return &this->keyboardButtons[100];
   else if (rowPin == 19 && columnPin == 7)
@@ -318,7 +310,7 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   if (rowPin == 18 && columnPin == 4)
     return &this->keyboardButtons[100];
   else if (rowPin == 18 && columnPin == 5)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[22];
   else if (rowPin == 18 && columnPin == 6)
     return &this->keyboardButtons[100];
   else if (rowPin == 18 && columnPin == 7)
@@ -330,7 +322,7 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   if (rowPin == 15 && columnPin == 4)
     return &this->keyboardButtons[100];
   else if (rowPin == 15 && columnPin == 5)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[21];
   else if (rowPin == 15 && columnPin == 6)
     return &this->keyboardButtons[48];
   else if (rowPin == 15 && columnPin == 7)

@@ -292,7 +292,7 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   else if (rowPin == 20 && columnPin == 7)
     return &this->keyboardButtons[100];
   else if (rowPin == 20 && columnPin == 8)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[73]; // F12
 
   // 3
   if (rowPin == 19 && columnPin == 4)
@@ -304,7 +304,7 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   else if (rowPin == 19 && columnPin == 7)
     return &this->keyboardButtons[100];
   else if (rowPin == 19 && columnPin == 8)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[72]; // F11
 
   // 4
   if (rowPin == 18 && columnPin == 4)
@@ -316,7 +316,7 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   else if (rowPin == 18 && columnPin == 7)
     return &this->keyboardButtons[50];
   else if (rowPin == 18 && columnPin == 8)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[71]; // F10
 
   // 5
   if (rowPin == 15 && columnPin == 4)
@@ -328,7 +328,7 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   else if (rowPin == 15 && columnPin == 7)
     return &this->keyboardButtons[49];
   else if (rowPin == 15 && columnPin == 8)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[70]; // F9
 
   // 6
   if (rowPin == 14 && columnPin == 4)
@@ -344,9 +344,9 @@ KeyboardButton *KeyboardManager::getExtendMapping(int8_t rowPin, int8_t columnPi
   if (rowPin == 16 && columnPin == 4)
     return &this->keyboardButtons[100];
   else if (rowPin == 16 && columnPin == 5)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[68]; // F7
   else if (rowPin == 16 && columnPin == 6)
-    return &this->keyboardButtons[100];
+    return &this->keyboardButtons[69]; // F8
 
   // 8
   if (rowPin == 14 && columnPin == 8)

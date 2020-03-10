@@ -27,8 +27,9 @@ class KeyboardManager {
 
     KeyboardButton *getBasicMapping(int8_t rowPin, int8_t columnPin);
     KeyboardButton *getExtendMapping(int8_t rowPin, int8_t columnPin);
-    
-    KeyboardButton keyboardButtons[101];
+
+    KeyboardButton keyboardButtons[53];
+    KeyboardButton noneButton;
 };
 
 #endif
